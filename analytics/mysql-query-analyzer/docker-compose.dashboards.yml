@@ -1,0 +1,41 @@
+version: '3.6'
+
+x-proxy: &proxy
+  http_proxy: ${http_proxy:-}
+  https_proxy: ${https_proxy:-}
+  no_proxy: ${no_proxy:-}
+
+services:
+  kibana:
+    image: elastic/kibana:7.3.0
+    hostname: kibana
+    volumes:
+      - type: volume
+        source: kibana-config
+        target: /usr/share/kibana/config
+      - type: volume
+        source: kibana-data
+        target: /usr/share/kibana/data
+    env_file: ./services/kibana/.env
+    environment:
+      <<: *proxy
+    ports:
+      - target: 5601
+        published: 5601
+        protocol: tcp
+    networks:
+      - workbench
+    restart: always
+    depends_on:
+      - elasticsearch
+
+volumes:
+  kibana-config:
+    driver: local
+  kibana-data:
+    driver: local
+
+networks:
+  workbench:
+    name: workbench
+    external: true

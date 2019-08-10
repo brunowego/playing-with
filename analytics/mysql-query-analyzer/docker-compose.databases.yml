@@ -1,0 +1,43 @@
+version: '3.6'
+
+x-proxy: &proxy
+  http_proxy: ${http_proxy:-}
+  https_proxy: ${https_proxy:-}
+  no_proxy: ${no_proxy:-}
+
+services:
+  mysql:
+    image: mysql:5.6
+    hostname: mysql
+    volumes:
+      - type: volume
+        source: mysql-data
+        target: /var/lib/mysql
+      - type: volume
+        source: mysql-log
+        target: /var/log/mysql
+      - type: bind
+        source: ./services/mysql/conf.d
+        target: /etc/mysql/conf.d
+    env_file: ./services/mysql/.env
+    environment:
+      <<: *proxy
+    ports:
+      - target: 3306
+        published: 3306
+        protocol: tcp
+    networks:
+      - workbench
+    restart: always
+
+volumes:
+  mysql-data:
+    driver: local
+  mysql-log:
+    name: mysql-log
+    external: true
+
+networks:
+  workbench:
+    name: workbench
+    external: true

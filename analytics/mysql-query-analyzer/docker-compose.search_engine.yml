@@ -1,0 +1,47 @@
+version: '3.6'
+
+x-proxy: &proxy
+  http_proxy: ${http_proxy:-}
+  https_proxy: ${https_proxy:-}
+  no_proxy: ${no_proxy:-}
+
+services:
+  elasticsearch:
+    image: elastic/elasticsearch:7.3.0
+    hostname: elasticsearch
+    volumes:
+      - type: volume
+        source: elasticsearch-config
+        target: /usr/share/elasticsearch/config
+      - type: volume
+        source: elasticsearch-data
+        target: /usr/share/elasticsearch/data
+      - type: volume
+        source: elasticsearch-data
+        target: /usr/share/elasticsearch/logs
+    environment:
+      <<: *proxy
+      discovery.type: single-node
+    ports:
+      - target: 9200
+        published: 9200
+        protocol: tcp
+      - target: 9300
+        published: 9300
+        protocol: tcp
+    networks:
+      - workbench
+    restart: always
+
+volumes:
+  elasticsearch-config:
+    driver: local
+  elasticsearch-data:
+    driver: local
+  elasticsearch-logs:
+    driver: local
+
+networks:
+  workbench:
+    name: workbench
+    external: true

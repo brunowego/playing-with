@@ -1,0 +1,43 @@
+version: '3.6'
+
+x-proxy: &proxy
+  http_proxy: ${http_proxy:-}
+  https_proxy: ${https_proxy:-}
+  no_proxy: ${no_proxy:-},elasticsearch,kibana
+
+services:
+  filebeat:
+    image: elastic/filebeat:7.3.0
+    hostname: filebeat
+    user: root
+    volumes:
+      - type: bind
+        source: ./services/filebeat/filebeat.yml
+        target: /usr/share/filebeat/filebeat.yml
+      - type: bind
+        source: ./services/filebeat/modules.d
+        target: /usr/share/filebeat/modules.d
+      - type: volume
+        source: mysql-log
+        target: /var/log/mysql
+    env_file: ./services/filebeat/.env
+    environment:
+      <<: *proxy
+    command: --strict.perms=false
+    networks:
+      - workbench
+    restart: always
+    depends_on:
+      - mysql
+      - elasticsearch
+      - kibana
+
+volumes:
+  mysql-log:
+    name: mysql-log
+    external: true
+
+networks:
+  workbench:
+    name: workbench
+    external: true
