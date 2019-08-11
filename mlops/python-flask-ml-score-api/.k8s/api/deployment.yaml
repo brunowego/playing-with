@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: python-flask-ml-score-api
+  namespace: ml-serving
+  labels:
+    app: ml-score-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ml-score-api
+  template:
+    metadata:
+      labels:
+        app: ml-score-api
+    spec:
+      containers:
+        - name: python-flask-ml-score-api
+          image: brunowego/python-flask-ml-score-api:latest
+          ports:
+            - name: http
+              containerPort: 5000
+              protocol: TCP
+          # livenessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 5000
+          # readinessProbe:
+          #   httpGet:
+          #     path: /
+          #     port: 5000
+          resources:
+            limits:
+              cpu: 100m
+              memory: 128Mi
+            requests:
+              cpu: 100m
+              memory: 128Mi
