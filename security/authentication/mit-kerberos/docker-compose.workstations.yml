@@ -1,0 +1,65 @@
+version: '3.6'
+
+x-proxy: &proxy
+  http_proxy: ${http_proxy:-}
+  https_proxy: ${https_proxy:-}
+  no_proxy: ${no_proxy:-}
+
+services:
+  through-password:
+    build:
+      context: ./services/through-password
+      args:
+        <<: *proxy
+    hostname: ws-using-password
+    domainname: example.com
+    environment:
+      <<: *proxy
+    networks:
+      - workbench
+    restart: always
+    depends_on:
+      - krb5-server
+
+  through-pam:
+    build:
+      context: ./services/through-pam
+      args:
+        <<: *proxy
+    hostname: ws-using-pam
+    domainname: example.com
+    environment:
+      <<: *proxy
+    networks:
+      - workbench
+    restart: always
+    depends_on:
+      - krb5-server
+
+  through-keytab:
+    build:
+      context: ./services/through-keytab
+      args:
+        <<: *proxy
+    hostname: ws-using-keytab
+    domainname: example.com
+    volumes:
+      - type: bind
+        source: ./services/through-keytab/keytabs
+        target: /etc/security/keytabs
+    environment:
+      <<: *proxy
+    ports:
+      - target: 22
+        published: 2222
+        protocol: tcp
+    networks:
+      - workbench
+    restart: always
+    depends_on:
+      - krb5-server
+
+networks:
+  workbench:
+    name: workbench
+    external: true
