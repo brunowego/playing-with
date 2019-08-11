@@ -11,7 +11,7 @@ git clone https://github.com/brunowego/playing-with.git playing-with && cd "$_"
 ```
 
 ```sh
-cd analytics/mysql-query-analyzer
+cd ./analytics/mysql-query-analyzer
 ```
 
 ### Boot Compose
