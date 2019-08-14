@@ -1,0 +1,49 @@
+{
+  "name": "bundler-webpack",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Webpack is an open-source JavaScript module bundler.",
+  "main": "index.tsx",
+  "scripts": {
+    "dev": "webpack-dev-server --config ./config/webpack.config.dev.ts --progress --colors",
+    "build": "webpack-cli --config ./config/webpack.config.prod.ts --progress --colors"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@types/react": "~16.9.1",
+    "@types/react-dom": "~16.8.5",
+    "react": "~16.9.0",
+    "react-dom": "~16.9.0"
+  },
+  "devDependencies": {
+    "@babel/core": "~7.5.5",
+    "@babel/preset-env": "~7.5.5",
+    "@babel/preset-react": "~7.0.0",
+    "@babel/preset-typescript": "~7.3.3",
+    "@types/html-webpack-plugin": "~3.2.1",
+    "@types/mini-css-extract-plugin": "~0.8.0",
+    "@types/node": "~12.7.1",
+    "@types/terser-webpack-plugin": "~1.2.1",
+    "@types/webpack": "~4.32.1",
+    "@types/webpack-dev-server": "~3.1.7",
+    "@types/webpack-merge": "~4.1.5",
+    "@typescript-eslint/eslint-plugin": "~2.0.0",
+    "@typescript-eslint/parser": "~2.0.0",
+    "babel-loader": "~8.0.6",
+    "clean-webpack-plugin": "~3.0.0",
+    "css-loader": "~3.2.0",
+    "eslint": "~6.1.0",
+    "html-webpack-plugin": "~3.2.0",
+    "less": "~3.9.0",
+    "less-loader": "~5.0.0",
+    "mini-css-extract-plugin": "~0.8.0",
+    "style-loader": "~1.0.0",
+    "terser-webpack-plugin": "~1.4.1",
+    "ts-node": "~8.3.0",
+    "typescript": "~3.5.3",
+    "webpack": "~4.39.2",
+    "webpack-cli": "~3.3.6",
+    "webpack-dev-server": "~3.8.0",
+    "webpack-merge": "~4.2.1"
+  }
+}
